@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Icon } from '../../../../components';
-import { useServerRequest } from '../../../../hooks';
-import { selectUserId } from '../../../../selectors';
 import { addCommentAsync } from '../../../../action';
 import { Comment } from './components';
 import styled from 'styled-components';
@@ -11,12 +9,10 @@ import { PROP_TYPE } from '../../../../constans';
 
 const CommentsContainer = ({ className, comments, postId }) => {
 	const [newComment, setNewComment] = useState('');
-	const userId = useSelector(selectUserId);
 	const dispatch = useDispatch();
-	const requestServer = useServerRequest();
 
-	const onNewCommentAdd = (userId, postId, content) => {
-		dispatch(addCommentAsync(requestServer, userId, postId, content));
+	const onNewCommentAdd = (postId, content) => {
+		dispatch(addCommentAsync(postId, content));
 		setNewComment('');
 	};
 
@@ -36,7 +32,7 @@ const CommentsContainer = ({ className, comments, postId }) => {
 					size="21px"
 					margin="0 0 0 10px"
 					onClick={() => {
-						onNewCommentAdd(userId, postId, newComment);
+						onNewCommentAdd(postId, newComment);
 					}}
 				/>
 			</div>
